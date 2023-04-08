@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { fetchResults } from "../fetchResults";
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -18,7 +19,10 @@ const SearchBar = () => {
         value={searchTerm}
         onChange={handleInputChange}
       />
-      <SearchButton><FontAwesomeIcon icon={faSearch}/></SearchButton>
+      <SearchButton onClick={async () => {
+        const data = await fetchResults(searchTerm);
+        console.log(data)
+      }}><FontAwesomeIcon icon={faSearch}/></SearchButton>
     </SearchContainer>
   );
 };
