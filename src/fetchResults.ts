@@ -3,7 +3,7 @@ import { Configuration, OpenAIApi } from "openai";
 export interface SearchResult {
     readonly section: string;
     readonly text: string;
-    readonly key_words: string;
+    readonly key_words: string[];
     readonly explanation: string;
 }
 
@@ -42,10 +42,10 @@ export async function prompt(query: string, numResults : number) : Promise<Searc
 
     const task: string = `
     Someone approaches you with the following search query "${query}". List ${numResults} small sections within the text of The Complete Works of Shakespeare that are most relevant to that query. 
-    Respond with the section name, some text from that section, 5 key words from the text that matched the query, and a short explanation on why the text is relevant to the query. 
+    Respond with the section name, some text from that section, some key words from the text that matched the query, and a short explanation on why the text is relevant to the query. 
 
     It is imperative that you ONLY respond in the following JSON format:
-    [{"section": "...", "text" : "...", "key_words": "<word_1> <word_2> ...", "explanation" : "..."}, ...]
+    [{"section": "...", "text" : "...", "key_words": ["...","...",...], "explanation" : "..."}, ...]
     `
     return await fetchResults(systemMessage, task);
 }

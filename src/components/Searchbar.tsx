@@ -3,9 +3,11 @@ import styled from "styled-components";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { prompt, SearchResult } from "../fetchResults";
+import { Ring } from "@uiball/loaders";
 
 const SearchBar : React.FC<{readonly onResult : (result: SearchResult[]) => void}> = ({onResult}) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleInputChange = (event : any) => {
     setSearchTerm(event.target.value);
@@ -20,9 +22,11 @@ const SearchBar : React.FC<{readonly onResult : (result: SearchResult[]) => void
         onChange={handleInputChange}
       />
       <SearchButton onClick={async () => {
+        setIsLoading(true);
         const data : SearchResult[] = await prompt(searchTerm, 3);
+        setIsLoading(false);
         onResult(data)
-      }}><FontAwesomeIcon icon={faSearch}/></SearchButton>
+      }}>{isLoading ? <Ring/> : <FontAwesomeIcon icon={faSearch}/>}</SearchButton>
     </SearchContainer>
   );
 };

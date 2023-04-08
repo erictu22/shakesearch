@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { SearchResult } from '../fetchResults';
-import { HighlightedText, P, Subtitle } from './Text';
+import { HighlightText, P, Subtitle } from './Text';
 
 export const ResultCard : React.FC<{result: SearchResult}> = ({result}) => {
     return <ResultCardWrapper>
         <MainSection>
             <Subtitle>{result.section}</Subtitle>
-            <HighlightedText text={result.text} highlightedWords={result.key_words.split(' ')}/>
+            <HighlightText text={result.text} highlightWords={result.key_words}/>
         </MainSection>
         <ExplanationSection>
             <P>{result.explanation}</P>
