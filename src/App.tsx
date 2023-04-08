@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import SearchBar from './components/Searchbar';
 import { H1 } from './components/Text';
+import { SearchResult } from './fetchResults';
 
 
 function App() {
+
+  const [results, setResults] = useState<SearchResult[]>([]);
+
   return (
     <AppWrapper>
       <MainContent>
         <H1>Shakesearch</H1>
-        <SearchBar/>
+        <SearchBar onResult={(data : SearchResult[]) => {
+          setResults(results);
+        }}/>
       </MainContent>
     </AppWrapper>
   );

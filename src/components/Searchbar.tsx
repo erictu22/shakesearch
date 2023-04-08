@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { fetchResults } from "../fetchResults";
+import { prompt, SearchResult } from "../fetchResults";
 
-const SearchBar = () => {
+const SearchBar : React.FC<{readonly onResult : (result: SearchResult[]) => void}> = ({onResult}) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleInputChange = (event : any) => {
@@ -20,8 +20,8 @@ const SearchBar = () => {
         onChange={handleInputChange}
       />
       <SearchButton onClick={async () => {
-        const data = await fetchResults(searchTerm);
-        console.log(data)
+        const data : SearchResult[] = await prompt(searchTerm, 3);
+        onResult(data)
       }}><FontAwesomeIcon icon={faSearch}/></SearchButton>
     </SearchContainer>
   );
@@ -36,6 +36,8 @@ const SearchContainer = styled.div`
 `;
 
 const SearchInput = styled.input`
+  color: white;
+  background-color: rgba(64,65,79, 1);
   padding: 8px 40px 8px 8px;
   font-size: 16px;
   border-radius: 8px;
