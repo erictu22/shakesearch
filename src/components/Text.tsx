@@ -18,6 +18,10 @@ export const P = styled.p`
     color: white;
 `
 
+const HighlightSpan = styled.span`
+    font-weight: bold;
+`
+
 export const HighlightText : React.FC<{readonly text: string, highlightWords: string[]}> = ({ text , highlightWords }) => {
     const regex = new RegExp(`(${highlightWords.join('|')})`, 'gi');
   
@@ -27,7 +31,7 @@ export const HighlightText : React.FC<{readonly text: string, highlightWords: st
       <P>
         {parts.map((part, index) =>
           regex.test(part) ? (
-            <mark key={index}>{part}</mark>
+            <HighlightSpan key={index}>{part}</HighlightSpan>
           ) : (
             <span key={index}>{part}</span>
           )
