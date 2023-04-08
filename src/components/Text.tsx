@@ -7,14 +7,16 @@ export const Title = styled.h1`
 `
 
 export const Subtitle = styled.h1`
-    font-size: 12px;
+    font-size: 16px;
     color: white;
     font-weight: bold;
 `
 
 export const P = styled.p`
-    font-size: 12px;
+    font-size: 16px;
     color: white;
+
+    margin: 
 `
 
 function highlightWordsInText(text: string, words: string[]) {

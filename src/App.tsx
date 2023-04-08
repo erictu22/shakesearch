@@ -17,11 +17,19 @@ function App() {
         <SearchBar onResult={(data : SearchResult[]) => {
           setResults(data);
         }}/>
+        <ResultsList>
         {results.map((value : SearchResult) => <ResultCard result={value}/>)}
+        </ResultsList>
       </MainContent>
     </AppWrapper>
   );
 }
+
+const ResultsList = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+`
 
 const MainContent = styled.div`
   width: 600px;

@@ -5,13 +5,27 @@ import { HighlightedText, P, Subtitle } from './Text';
 
 export const ResultCard : React.FC<{result: SearchResult}> = ({result}) => {
     return <ResultCardWrapper>
-        <Subtitle>{result.section}</Subtitle>
-        <HighlightedText text={result.text} highlightedWords={result.key_words.split(' ')}/>
+        <MainSection>
+            <Subtitle>{result.section}</Subtitle>
+            <HighlightedText text={result.text} highlightedWords={result.key_words.split(' ')}/>
+        </MainSection>
+        <ExplanationSection>
+            <P>{result.explanation}</P>
+        </ExplanationSection>
     </ResultCardWrapper>
 }
+
+const MainSection = styled.div`
+    background-color: rgba(68,70,84,1);
+    padding: 0 8px;
+`
+
+const ExplanationSection = styled.div`
+    background-color: rgba(64,65,79, 1);
+    padding: 0 8px;
+`
 
 const ResultCardWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: rgba(68,70,84,1);
 `
