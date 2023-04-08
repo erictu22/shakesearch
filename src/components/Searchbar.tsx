@@ -9,6 +9,13 @@ const SearchBar : React.FC<{readonly onResult : (result: SearchResult[]) => void
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    const data : SearchResult[] = await prompt(searchTerm, 3);
+    setIsLoading(false);
+    onResult(data)
+  }
+
   const handleInputChange = (event : any) => {
     setSearchTerm(event.target.value);
   };
@@ -20,13 +27,13 @@ const SearchBar : React.FC<{readonly onResult : (result: SearchResult[]) => void
         placeholder="Search"
         value={searchTerm}
         onChange={handleInputChange}
+        onKeyUp={(event : React.KeyboardEvent) => {
+          if (event.key === "Enter") {
+            handleSubmit()
+          }
+        }}
       />
-      <SearchButton onClick={async () => {
-        setIsLoading(true);
-        const data : SearchResult[] = await prompt(searchTerm, 3);
-        setIsLoading(false);
-        onResult(data)
-      }}>{isLoading ? <Ring/> : <FontAwesomeIcon icon={faSearch}/>}</SearchButton>
+      <SearchButton onClick={handleSubmit}>{isLoading ? <Ring size={20} color='grey'/> : <FontAwesomeIcon icon={faSearch}/>}</SearchButton>
     </SearchContainer>
   );
 };
