@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,7 +18,7 @@ const SearchBar = () => {
         value={searchTerm}
         onChange={handleInputChange}
       />
-      <SearchButton>Search</SearchButton>
+      <SearchButton><FontAwesomeIcon icon={faSearch}/></SearchButton>
     </SearchContainer>
   );
 };
@@ -30,7 +32,7 @@ const SearchContainer = styled.div`
 `;
 
 const SearchInput = styled.input`
-  padding: 10px;
+  padding: 8px 40px 8px 8px;
   font-size: 16px;
   border-radius: 8px;
   border: none;
