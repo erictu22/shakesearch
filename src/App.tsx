@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { ResultCard } from './components/ResultCard';
 import SearchBar from './components/Searchbar';
-import { H1 } from './components/Text';
+import { Title } from './components/Text';
 import { SearchResult } from './fetchResults';
 
 
@@ -12,10 +13,11 @@ function App() {
   return (
     <AppWrapper>
       <MainContent>
-        <H1>Shakesearch</H1>
+        <Title>Shakesearch</Title>
         <SearchBar onResult={(data : SearchResult[]) => {
-          setResults(results);
+          setResults(data);
         }}/>
+        {results.map((value : SearchResult) => <ResultCard result={value}/>)}
       </MainContent>
     </AppWrapper>
   );

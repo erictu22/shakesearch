@@ -29,6 +29,7 @@ async function fetchResults(systemMessage: string, task : string): Promise<Searc
             explanation: datum['explanation']
         }
     })
+    console.log(output)
     return output
 }
 
