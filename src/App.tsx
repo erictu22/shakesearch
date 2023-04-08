@@ -13,7 +13,9 @@ function App() {
   return (
     <AppWrapper>
       <MainContent>
-        <Title>Shakesearch</Title>
+        <TitleSection>
+          <Title>Shakesearch</Title>
+        </TitleSection>
         <SearchBar onResult={(data : SearchResult[]) => {
           setResults(data);
         }}/>
@@ -24,6 +26,12 @@ function App() {
     </AppWrapper>
   );
 }
+
+const TitleSection = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+`
 
 const ResultsList = styled.div`
   display: flex;
@@ -36,6 +44,7 @@ const MainContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 40px;
 `
 
 const AppWrapper = styled.div`
