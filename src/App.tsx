@@ -1,26 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import styled from 'styled-components';
+import { H1 } from './components/Text';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppWrapper>
+      <H1> Shakesearch </H1>
+      
+    </AppWrapper>
   );
 }
+
+const AppWrapper = styled.div`
+  background-color: rgba(52,53,65,1);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 
 export default App;
