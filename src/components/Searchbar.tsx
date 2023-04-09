@@ -11,7 +11,7 @@ const SearchBar : React.FC<{readonly onResult : (result: SearchResult[]) => void
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    const data : SearchResult[] = await prompt(searchTerm, 3);
+    const data : SearchResult[] = await prompt(searchTerm, 5);
     setIsLoading(false);
     onResult(data)
   }
