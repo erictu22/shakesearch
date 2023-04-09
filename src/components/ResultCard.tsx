@@ -14,7 +14,7 @@ export const ResultCard : React.FC<{readonly result: SearchResult, readonly isEx
                 <HighlightText text={`"${result.text}"`} highlightWords={result.key_words}/>
             </TextSection>
         </MainSection>
-        <ExplanationSection className={isExpanded ? 'content show' : 'content'}>
+        <ExplanationSection isExpanded={isExpanded}>
             <P style={{marginTop: 12, marginBottom: 12, marginLeft: 8}}>{result.explanation}</P>
         </ExplanationSection>
     </ResultCardWrapper>
@@ -35,10 +35,21 @@ const MainSection = styled.div`
     padding: 16px 12px;
 `
 
-const ExplanationSection = styled.div`
+const ExplanationSection = styled.div<{readonly isExpanded : boolean}>`
     background-color: rgba(60,60,70, 1);
     overflow: hidden;
     padding: 0 12px;
+
+    ${({isExpanded}) => {
+        return isExpanded ? `
+        height: auto;
+        max-height: 999px;
+        transition: all 0.2s cubic-bezier(1,0,1,0);
+        ` : `
+        max-height: 0;
+        transition: all 0.2s cubic-bezier(0,1,0,1);
+        `
+    }}
 `
 
 const ResultCardWrapper = styled.div`

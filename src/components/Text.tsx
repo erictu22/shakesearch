@@ -20,7 +20,7 @@ export const P = styled.p`
     cursor: text;
     margin: 4px 0;
     line-height: 24px;
-`
+    `
 
 const HighlightSpan = styled.span`
     font-weight: bold;

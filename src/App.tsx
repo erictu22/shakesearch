@@ -42,7 +42,6 @@ width: 600px;
 `
 
 const AppWrapper = styled.div`
-  background-color: rgba(52,53,65,1);
   height: 100vh;
   display: flex;
   flex-direction: column;

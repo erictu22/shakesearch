@@ -17,7 +17,7 @@ async function fetchResults(systemMessage: string, task : string): Promise<Searc
         model: "gpt-3.5-turbo",
         messages: [{ role: "system", content: systemMessage }, { role: "user", content: task }],
         max_tokens: 1200,
-        temperature: 0.2
+        temperature: 0.9
     });
     const jsonOutput : string = completion.data.choices[0].message?.content as string;
     console.log(jsonOutput)
@@ -42,16 +42,19 @@ export async function prompt(query: string, numResults : number) : Promise<Searc
     `
 
     const task: string = `
-    Someone approaches you with the following search query "${query}". 
-    List 1-${numResults} quotes from The Complete Works of Shakespeare that are relevant to that query. 
+    Given the search query "${query}",
+    list 1 to ${numResults} quotes from The Complete Works of Shakespeare that are relevant to that query. 
+    
     For each section, respond with:
     1. The section name - include the act / scene number if relevant
     2. The exact quote from the work
-    3. Some key words from the quote that matched the query
-    4. A short explanation on why the quote is relevant to the query. 
+    3. A short explanation of the context and meaning behind the quote in modern English
+    4. Some key words taken from the quote that are relevant to the query
+
+    Only include the quote in your response if it's a good match. Don't include it otherwise.
 
     It is imperative that you ONLY respond in the following JSON format:
-    [{"section": "...", "quote" : "...", "key_words": ["...","...",...], "explanation" : "..."}, ...]
+    [{"section": "...", "quote" : "...", "explanation" : "...", "key_words": ["...", "...", ...]}, ...]
     `
     let result : SearchResult[] = []
 
