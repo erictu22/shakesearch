@@ -11,11 +11,13 @@ export const Subtitle = styled.h1`
     font-size: 16px;
     color: white;
     font-weight: bold;
+    cursor: text;
 `
 
 export const P = styled.p`
     font-size: 16px;
     color: white;
+    cursor: text;
 `
 
 const HighlightSpan = styled.span`

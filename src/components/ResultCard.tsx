@@ -3,20 +3,25 @@ import styled from 'styled-components';
 import { SearchResult } from '../fetchResults';
 import { HighlightText, P, Subtitle } from './Text';
 
-export const ResultCard : React.FC<{result: SearchResult}> = ({result}) => {
+export const ResultCard : React.FC<{readonly result: SearchResult, readonly isExpanded: boolean, readonly onClick: () => void}> = ({result, isExpanded, onClick}) => {
     return <ResultCardWrapper>
-        <MainSection>
+        <MainSection onClick={onClick}>
             <Subtitle>{result.section}</Subtitle>
             <HighlightText text={result.text} highlightWords={result.key_words}/>
         </MainSection>
-        <ExplanationSection>
+        {isExpanded ? <ExplanationSection>
             <P>{result.explanation}</P>
-        </ExplanationSection>
+        </ExplanationSection> : null}
     </ResultCardWrapper>
 }
 
 const MainSection = styled.div`
     background-color: rgba(68,70,84,1);
+    &:hover {
+        background-color: rgba(79, 82, 94, 1);
+    }
+    transition: background-color 0.2s ease-in-out;
+    cursor: pointer;
     padding: 0 8px;
 `
 

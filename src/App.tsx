@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { ResultCard } from './components/ResultCard';
+import { ResultList } from './components/ResultList';
 import SearchBar from './components/Searchbar';
 import { Title } from './components/Text';
 import { SearchResult } from './fetchResults';
 
 
 function App() {
-
   const [results, setResults] = useState<SearchResult[]>([]);
 
   return (
@@ -19,9 +18,7 @@ function App() {
         <SearchBar onResult={(data : SearchResult[]) => {
           setResults(data);
         }}/>
-        <ResultsList>
-        {results.map((value : SearchResult) => <ResultCard result={value}/>)}
-        </ResultsList>
+        <ResultList resultList={results}/>
       </MainContent>
     </AppWrapper>
   );
@@ -33,14 +30,11 @@ const TitleSection = styled.div`
   width: 100%;
 `
 
-const ResultsList = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 12px;
-`
-
 const MainContent = styled.div`
-  width: 600px;
+@media only screen and (max-width: 768px) {
+  width: 400px;
+}
+width: 600px;
   display: flex;
   flex-direction: column;
   align-items: center;
