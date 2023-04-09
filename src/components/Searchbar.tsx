@@ -4,6 +4,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { prompt, SearchResult } from "../fetchResults";
 import { Ring } from "@uiball/loaders";
+import { ProgressBar } from "./ProgressBar";
 
 const SearchBar : React.FC<{readonly onResult : (result: SearchResult[]) => void}> = ({onResult}) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,6 +34,7 @@ const SearchBar : React.FC<{readonly onResult : (result: SearchResult[]) => void
           }
         }}
       />
+      <ProgressBar progress={60}/>
       <SearchButton onClick={handleSubmit}>{isLoading ? <Ring size={20} color='grey'/> : <FontAwesomeIcon icon={faSearch}/>}</SearchButton>
     </SearchContainer>
   );
@@ -44,6 +46,8 @@ const SearchContainer = styled.div`
   justify-content: center;
   width: 100%;
   position: relative;
+  overflow: hidden;
+  border-radius: 8px;
 `;
 
 const SearchInput = styled.input`
@@ -51,7 +55,6 @@ const SearchInput = styled.input`
   background-color: rgba(64,65,79, 1);
   padding: 8px 40px 8px 12px;
   font-size: 16px;
-  border-radius: 8px;
   border: none;
   outline: none;
   width: 100%;
