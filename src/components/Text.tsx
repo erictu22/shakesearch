@@ -11,13 +11,15 @@ export const Subtitle = styled.h1`
     font-size: 16px;
     color: white;
     font-weight: bold;
-    cursor: text;
+    margin: 4px 0;
 `
 
 export const P = styled.p`
     font-size: 16px;
     color: white;
     cursor: text;
+    margin: 4px 0;
+    line-height: 24px;
 `
 
 const HighlightSpan = styled.span`

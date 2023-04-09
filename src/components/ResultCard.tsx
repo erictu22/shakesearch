@@ -4,16 +4,26 @@ import { SearchResult } from '../fetchResults';
 import { HighlightText, P, Subtitle } from './Text';
 
 export const ResultCard : React.FC<{readonly result: SearchResult, readonly isExpanded: boolean, readonly onClick: () => void}> = ({result, isExpanded, onClick}) => {
-    return <ResultCardWrapper>
+    
+    return <ResultCardWrapper >
         <MainSection onClick={onClick}>
-            <Subtitle>{result.section}</Subtitle>
-            <HighlightText text={result.text} highlightWords={result.key_words}/>
+            <TextSection>
+            <Subtitle style={{cursor: isExpanded ? 'text' : 'pointer'}}>{result.section}</Subtitle>
+            </TextSection>
+            <TextSection>
+                <HighlightText text={`"${result.text}"`} highlightWords={result.key_words}/>
+            </TextSection>
         </MainSection>
-        {isExpanded ? <ExplanationSection>
-            <P>{result.explanation}</P>
-        </ExplanationSection> : null}
+        <ExplanationSection className={isExpanded ? 'content show' : 'content'}>
+            <P style={{marginTop: 12, marginBottom: 12, marginLeft: 8}}>{result.explanation}</P>
+        </ExplanationSection>
     </ResultCardWrapper>
 }
+
+const TextSection = styled.div`
+    display: flex;
+    flex-direction: row;
+`
 
 const MainSection = styled.div`
     background-color: rgba(68,70,84,1);
@@ -22,12 +32,13 @@ const MainSection = styled.div`
     }
     transition: background-color 0.2s ease-in-out;
     cursor: pointer;
-    padding: 0 8px;
+    padding: 16px 12px;
 `
 
 const ExplanationSection = styled.div`
-    background-color: rgba(64,65,79, 1);
-    padding: 0 8px;
+    background-color: rgba(60,60,70, 1);
+    overflow: hidden;
+    padding: 0 12px;
 `
 
 const ResultCardWrapper = styled.div`

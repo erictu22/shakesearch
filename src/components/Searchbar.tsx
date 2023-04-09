@@ -49,7 +49,7 @@ const SearchContainer = styled.div`
 const SearchInput = styled.input`
   color: white;
   background-color: rgba(64,65,79, 1);
-  padding: 8px 40px 8px 8px;
+  padding: 8px 40px 8px 12px;
   font-size: 16px;
   border-radius: 8px;
   border: none;

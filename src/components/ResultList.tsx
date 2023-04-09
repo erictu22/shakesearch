@@ -7,7 +7,11 @@ export const ResultList: React.FC<{ readonly resultList: SearchResult[] }> = ({ 
     const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
     return <ResultsList>
         {resultList.map((value: SearchResult, index: number) => <ResultCard key={`card-${index}`} result={value} isExpanded={expandedIdx === index} onClick={() => {
-            setExpandedIdx(index);
+            if (index === expandedIdx) {
+                setExpandedIdx(null)
+            } else {
+                setExpandedIdx(index);
+            }
         }} />)}
     </ResultsList>
 }
