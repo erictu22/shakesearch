@@ -5,16 +5,47 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { prompt, SearchResult } from "../fetchResults";
 import { Ring } from "@uiball/loaders";
 import { ProgressBar } from "./ProgressBar";
+import { MAX_NUM_RESULTS } from "../constants";
 
 const SearchBar : React.FC<{readonly onResult : (result: SearchResult[]) => void}> = ({onResult}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(0);
 
+  let resultString = ""
+  let numClosingTokens = 0
   const handleSubmit = async () => {
+
+    if (isLoading) {
+      return;
+    }
+
     setIsLoading(true);
-    const data : SearchResult[] = await prompt(searchTerm, 6);
-    setIsLoading(false);
-    onResult(data)
+    setProgress(1)
+    prompt(searchTerm, MAX_NUM_RESULTS, (content: string, isDone: boolean) => {
+      if (isDone) {
+        setIsLoading(false);
+        const data = JSON.parse(resultString);
+        const results : SearchResult[] = data.map((datum : any) => {
+          const result : SearchResult = {
+            section: datum['section'],
+            text: datum['quote'],
+            key_words: datum['key_words'],
+            explanation: datum['explanation']
+          }
+          return result;
+        })
+        onResult(results)
+        setProgress(0)
+      } else {
+        resultString = resultString + content;
+        if (content.includes('{')) {
+          numClosingTokens = numClosingTokens + 1
+        }
+        setProgress(Math.floor((numClosingTokens / (MAX_NUM_RESULTS)) * 100))
+      }
+    });
+    
   }
 
   const handleInputChange = (event : any) => {
@@ -34,7 +65,7 @@ const SearchBar : React.FC<{readonly onResult : (result: SearchResult[]) => void
           }
         }}
       />
-      <ProgressBar progress={60}/>
+      <ProgressBar progress={progress}/>
       <SearchButton onClick={handleSubmit}>{isLoading ? <Ring size={20} color='grey'/> : <FontAwesomeIcon icon={faSearch}/>}</SearchButton>
     </SearchContainer>
   );
@@ -48,6 +79,7 @@ const SearchContainer = styled.div`
   position: relative;
   overflow: hidden;
   border-radius: 8px;
+  margin: 4px 0 12px 0;
 `;
 
 const SearchInput = styled.input`

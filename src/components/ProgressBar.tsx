@@ -19,7 +19,8 @@ const Bar = styled.div`
 
 const Progress = styled.div<{readonly progress : number}>`
     width: ${({progress}) => progress}%;
+    display: ${({progress}) => progress === 0 ? 'none' : 'block'};
     height: 1px;
     background-color: grey;
-    transition: width 1s ease-in-out;
+    transition: width 2s ease-in-out;
 `

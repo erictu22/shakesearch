@@ -1,4 +1,5 @@
 import { Configuration, OpenAIApi } from "openai";
+import {SSE} from './sse'
 
 export interface SearchResult {
     readonly section: string;
@@ -7,34 +8,44 @@ export interface SearchResult {
     readonly explanation: string;
 }
 
-async function fetchResults(systemMessage: string, task : string): Promise<SearchResult[]> {
-    const configuration = new Configuration({
-        apiKey: process.env.REACT_APP_OPENAI_KEY,
-    });
-    const openai = new OpenAIApi(configuration);
+async function fetchResults(systemMessage: string, task : string, eventStreamHandler : (content : string, isDone: boolean) => void) {
+    let source = new SSE(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization:
+              `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
+          },
+          method: "POST",
+          payload: JSON.stringify({
+            model: "gpt-3.5-turbo",
+            messages: [{ role: "system", content: systemMessage }, { role: "user", content: task }],
+            max_tokens: 1200,
+            temperature: 0.9,
+            stream: true
+        }),
+        }
+      )
 
-    const completion = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "system", content: systemMessage }, { role: "user", content: task }],
-        max_tokens: 1200,
-        temperature: 0.9
-    });
-    const jsonOutput : string = completion.data.choices[0].message?.content as string;
-    console.log(jsonOutput)
-    const data = JSON.parse(jsonOutput)
+    // @ts-ignore
+    source.addEventListener("message", (e : any) => {
+        if (e.data == '[DONE]') {
+            eventStreamHandler("", true)
+            return;
+        }
 
-    const output: SearchResult[] = data.map((datum : any) => {
-        return {
-            section: datum['section'],
-            text: datum['quote'],
-            key_words: datum['key_words'],
-            explanation: datum['explanation']
+        const content : string = JSON.parse(e.data)['choices'][0]['delta']['content']
+        if (content) {
+            eventStreamHandler(content, false)
         }
     })
-    return output
+
+    // @ts-ignore
+    source.stream();
 }
 
-export async function prompt(query: string, numResults : number) : Promise<SearchResult[]> {
+export async function prompt(query: string, numResults : number, eventStreamHandler : (content : string, isDone: boolean) => void) {
 
     const systemMessage: string = `
     You are a helpful assistant who pays careful attention to instructions. 
@@ -48,20 +59,18 @@ export async function prompt(query: string, numResults : number) : Promise<Searc
     For each section, respond with:
     1. The section name - include the act / scene number if relevant
     2. The exact quote from the work
-    3. A short explanation of the context and meaning behind the quote in modern English
-    4. Some key words taken from the quote that are relevant to the query
+    3. An explanation of the quote's context as well as why it is relevant to the search query.
+    4. Some key words from the quote that are relevant to the query
 
     Only include the quote in your response if it's a good match. Don't include it otherwise.
 
     It is imperative that you ONLY respond in the following JSON format:
     [{"section": "...", "quote" : "...", "explanation" : "...", "key_words": ["...", "...", ...]}, ...]
     `
-    let result : SearchResult[] = []
 
     try {
-        result = await fetchResults(systemMessage, task);
+        fetchResults(systemMessage, task, eventStreamHandler);
     } catch (e: any){
         console.log(e)
     }
-    return result;
 }
