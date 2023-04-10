@@ -22,5 +22,5 @@ const Progress = styled.div<{readonly progress : number}>`
     display: ${({progress}) => progress === 0 ? 'none' : 'block'};
     height: 1px;
     background-color: grey;
-    transition: width 6s ease-in-out;
+    transition: width 4s ease-in-out;
 `
