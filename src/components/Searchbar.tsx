@@ -40,7 +40,7 @@ const SearchBar: React.FC<{ readonly onResult: (result: SearchResult[]) => void 
           onResult(results)
           setProgress(0)
         } catch {
-          alert('The model failed to respond with a properly formatted JSON response')
+          alert('Uh oh... something went wrong. Please retry your search.')
           window.location.reload();
           console.log(resultString)
         }
