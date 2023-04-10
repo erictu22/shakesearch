@@ -1,46 +1,29 @@
-# Getting Started with Create React App
+# Changes made
+1. I threw away the .txt file and built my app on top of OpenAI's chat completion API
+2. I built my app in React.js using styled-components for styling
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Why AI?
+You may be thinking that this is a "hammer looking for a nail" solution. At least I did in the beginning. However, after testing various prompts on chat.openai.com, I realized that GPT3 satisfies a suprising number of important uses cases. Such as:
 
-## Available Scripts
+- Exact word searches
+- Context and semantic searches (try searching for 'moments of foreshadowing' )
+- Informative results : I had GPT3 include a brief explanation on why it's chosen each search result
 
-In the project directory, you can run:
+Futhermore, this solution is relatively no-code on the backend.
 
-### `npm start`
+# Why not AI?
+I've made several trade-offs by going with this approach:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Queries are slow
+- Only 10 to 12 results can be fetched at a time due to OpenAI's token limit
+- Queries are expensive: Every query costs me approx. $0.005 , which adds up over time
+- Results are unpredictable and can sometimes fail: I ask GPT to only respond in JSON and it's able to follow the JSON format ~95% of the time
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# Product and Design
+Since queries are slow, I've made a few P&D choices to mitigate this problem
 
-### `npm test`
+- Progress bar - I told the API to respond by streaming server-side events. This allows us to render a smooth progress bar that accurately depicts the model's progress
+- Animated loading icon - Hitting enter replaces the search icon with an animated loading wheel to make the app feel more responsive
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Future work
+Currently, quote explanations are generated alongside search results in the same prompt. If I had more time, I would remove quote explanations from the initial search query prompt and have them only be generated only when users click on a result. That way, I can generate and display more results in a faster timeframe.
