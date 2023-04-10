@@ -20,12 +20,12 @@ I've made several trade-offs with this approach:
 - Queries are expensive: Every query costs me approx. $0.005 , which adds up over time
 - Results are unpredictable and can sometimes fail: I ask GPT to only respond in JSON and it's able to follow the format ~95% of the time
 
-# Product and Design
+## 🎨 Product and Design
 Since queries are slow, I've made a few P&D choices to mitigate this problem
 
 - Adding an animated progress bar: I told the API to respond by streaming server-side events. This allows us to render a smooth progress bar that accurately depicts the model's progress
 - Animated loading icon: The search icon gets replaced with an animated loading wheel to make the app feel more responsive
 - Error messages: In the rare event that the model responds with a poorly formated JSON response, an error message is shown
 
-# Future work
+## 🗺️ Future work
 Currently, quote explanations are generated alongside search results in the same request. If I had more time, I would remove quote explanations and generate them only when users click on the respective result. That way, I can generate and display more initial results within a faster timeframe.
