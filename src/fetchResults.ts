@@ -35,10 +35,11 @@ async function fetchResults(systemMessage: string, task : string, eventStreamHan
             return;
         }
 
-        const content : string = JSON.parse(e.data)['choices'][0]['delta']['content']
+            const content : string = JSON.parse(e.data)['choices'][0]['delta']['content']
         if (content) {
             eventStreamHandler(content, false)
         }
+        
     })
 
     // @ts-ignore
@@ -49,18 +50,17 @@ export async function prompt(query: string, numResults : number, eventStreamHand
 
     const systemMessage: string = `
     You are a helpful assistant who pays careful attention to instructions. 
-    You are also a literature expert who has the entirety of "The Complete Works of Shakespeare" in front of you.
+    You are also a literature expert who has the "The Complete Works of Shakespeare" memorized.
     `
 
     const task: string = `
-    Given the search query "${query}",
-    list 1 to ${numResults} quotes from The Complete Works of Shakespeare that are relevant to that query. 
+    Given the search query "${query}", list 1 to ${numResults} quotes from The Complete Works of Shakespeare that are relevant to that query. 
     
     For each section, respond with:
     1. The section name - include the act / scene number if relevant
     2. The exact quote from the work
-    3. An explanation of the quote's context as well as why it is relevant to the search query.
-    4. Some key words from the quote that are relevant to the query
+    3. A short explanation of the quote's context, as well as why it is relevant to the search query
+    4. Some key words from the quote that match the query
 
     Only include the quote in your response if it's a good match. Don't include it otherwise.
 

@@ -7,7 +7,7 @@ import { Ring } from "@uiball/loaders";
 import { ProgressBar } from "./ProgressBar";
 import { MAX_NUM_RESULTS } from "../constants";
 
-const SearchBar : React.FC<{readonly onResult : (result: SearchResult[]) => void}> = ({onResult}) => {
+const SearchBar: React.FC<{ readonly onResult: (result: SearchResult[]) => void }> = ({ onResult }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
@@ -25,18 +25,27 @@ const SearchBar : React.FC<{readonly onResult : (result: SearchResult[]) => void
     prompt(searchTerm, MAX_NUM_RESULTS, (content: string, isDone: boolean) => {
       if (isDone) {
         setIsLoading(false);
-        const data = JSON.parse(resultString);
-        const results : SearchResult[] = data.map((datum : any) => {
-          const result : SearchResult = {
-            section: datum['section'],
-            text: datum['quote'],
-            key_words: datum['key_words'],
-            explanation: datum['explanation']
-          }
-          return result;
-        })
-        onResult(results)
-        setProgress(0)
+        try {
+          
+          const data = JSON.parse(resultString);
+          const results: SearchResult[] = data.map((datum: any) => {
+            const result: SearchResult = {
+              section: datum['section'],
+              text: datum['quote'],
+              key_words: datum['key_words'],
+              explanation: datum['explanation']
+            }
+            return result;
+          })
+          onResult(results)
+          setProgress(0)
+        } catch {
+          alert('The model failed to respond with a properly formatted JSON response')
+          window.location.reload();
+          console.log(resultString)
+        }
+
+
       } else {
         resultString = resultString + content;
         if (content.includes('{')) {
@@ -45,10 +54,10 @@ const SearchBar : React.FC<{readonly onResult : (result: SearchResult[]) => void
         setProgress(Math.floor((numClosingTokens / (MAX_NUM_RESULTS)) * 100))
       }
     });
-    
+
   }
 
-  const handleInputChange = (event : any) => {
+  const handleInputChange = (event: any) => {
     setSearchTerm(event.target.value);
   };
 
@@ -59,14 +68,14 @@ const SearchBar : React.FC<{readonly onResult : (result: SearchResult[]) => void
         placeholder="Search"
         value={searchTerm}
         onChange={handleInputChange}
-        onKeyUp={(event : React.KeyboardEvent) => {
+        onKeyUp={(event: React.KeyboardEvent) => {
           if (event.key === "Enter") {
             handleSubmit()
           }
         }}
       />
-      <ProgressBar progress={progress}/>
-      <SearchButton onClick={handleSubmit}>{isLoading ? <Ring size={20} color='grey'/> : <FontAwesomeIcon icon={faSearch}/>}</SearchButton>
+      <ProgressBar progress={progress} />
+      <SearchButton onClick={handleSubmit}>{isLoading ? <Ring size={20} color='grey' /> : <FontAwesomeIcon icon={faSearch} />}</SearchButton>
     </SearchContainer>
   );
 };
