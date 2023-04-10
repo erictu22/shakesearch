@@ -3,7 +3,7 @@ This app is built on top of OpenAI's GPT-3 model using React.js and Typescript
 ## 🦾 Why AI?
 You may be thinking this is a "hammer looking for a nail" solution... at least I thought that way in the beginning. 
 
-However, after testing various prompts, I realized that that this tech satisfies a suprising number of use cases that users may value, including:
+However, after testing various prompts, I realized that this tech satisfies a suprising number of use cases that users may value, including:
 
 - Exact word search
 - Context and semantic search (try searching for 'moments of foreshadowing' or 'metaphors')
